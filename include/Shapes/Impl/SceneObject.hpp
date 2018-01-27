@@ -1,7 +1,7 @@
 #ifndef SCENE_OBJECT_IMPL_HPP__
 #define SCENE_OBJECT_IMPL_HPP__
 
-namespace Scene {
+namespace Entity {
 
 template<typename T, typename... Args>
 void SceneObject::add_component(Args&&... args) {
@@ -13,6 +13,6 @@ Component::ComponentBase& SceneObject::get_component() {
 	return components_.get_component<idx>();
 }
 
-} // namespace Scene
+} // namespace Entity
 
 #endif

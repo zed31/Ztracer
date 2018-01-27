@@ -3,11 +3,13 @@
 
 #include "Components/ComponentList.hpp"
 
-namespace Scene {
+namespace Entity {
+
+using Tag = std::size_t;
 
 class SceneObject {
 public:
-	SceneObject() = default;
+	SceneObject(Tag tag);
 	SceneObject(const SceneObject&) = delete;
 	SceneObject &operator=(const SceneObject&) = delete;
 	SceneObject(SceneObject&&) = default;
@@ -19,9 +21,10 @@ public:
 	Component::ComponentBase& get_component();
 private:
 	Component::ComponentList components_;
+	Tag tag_;
 };
 
-} // namespace Scene
+} // namespace Entity
 
 #include "Impl/SceneObject.hpp"
 
