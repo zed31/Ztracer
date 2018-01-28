@@ -7,9 +7,9 @@
 namespace Component {
 
 struct Direction : ComponentBase, Math::Vector3<float> {
-	static constexpr Index idxDirection = 1;
+	static constexpr Index idx = 1;
 	Direction(float xDir, float yDir, float zDir) 
-		: ComponentBase{ idxDirection }, Math::Vector3<float>{ xDir, yDir, zDir } {}
+		: ComponentBase{ idx }, Math::Vector3<float>{ xDir, yDir, zDir } {}
 };
 
 } // namespace Component
