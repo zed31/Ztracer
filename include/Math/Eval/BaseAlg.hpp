@@ -13,8 +13,8 @@ public:
 	auto& operator()(const std::size_t height, const std::size_t width) { return derived()(height, width); }
 	const auto& operator()(const std::size_t height, const std::size_t width) { return derived()(height, width); }
 private:
-	auto &derived() { return static_cast<Derived&>(*this); };
-	auto const &derived() const { return static_cast<Derived const&>(*this); };
+	auto& derived() { return static_cast<Derived&>(*this); };
+	auto const& derived() const { return static_cast<Derived const&>(*this); };
 };
 
 } // namespace Math
