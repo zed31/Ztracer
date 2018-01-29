@@ -9,7 +9,7 @@ project "ZTracer"
    kind "ConsoleApp"
    language "C++"
    includedirs { "./", "./include" }
-   files { "./src/**.cpp", "./include/**.hh", "./include/**.hpp" }
+   files { "./src/**.cpp", "./include/**.hh", "./include/**.hpp", "./main.cpp" }
    filter { "configurations:Debug" }
        defines { "DEBUG" }
        symbols "On"
@@ -17,6 +17,19 @@ project "ZTracer"
    filter { "configurations:Release" }
        defines { "NDEBUG" }
        optimize "On"
+
+project "ZTracerUnitTest"
+    kind "ConsoleApp"
+    language "C++"
+    includedirs { "./", "./include", "./test" }
+    files { "./src/**.cpp", "./include/**.hh", "./include/**.hpp", "./test/**.cpp" }
+    filter { "configurations:Debug" }
+        defines { "DEBUG" }
+        symbols "On"
+
+    filter { "configurations:Release" }
+        defines { "NDEBUG" }
+        optimize "On"
 
 newaction {
     trigger     = "clean",
