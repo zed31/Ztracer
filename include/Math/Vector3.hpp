@@ -41,8 +41,8 @@ struct Vector3 {
 		return Vector3<T>{ x - rhs.x, y - rhs.y, z - rhs.z }; 
 	};
 
-	auto operator-(const T& value) const -> Vector3 {
-		return Vector3<T>{ x - value, y - value, z - value };
+	auto operator-(const T& rhs) const -> Vector3 {
+		return Vector3<T>{ x - rhs, y - rhs, z - rhs };
 	};
 
 	auto operator*(const Vector3& rhs) const -> Vector3 { 
