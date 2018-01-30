@@ -15,13 +15,15 @@ public:
 	auto row() const { return std::max(derived1_.row(), derived2_.row()); };
 	auto col() const { return std::max(derived1_.col(), derived2_.col()); };
 
-	auto& operator()(const std::size_t height, const std::size_t width) {
-		return derived1_(height, width) + derived2_(height, width);
+	auto& operator()(const std::size_t x, const std::size_t y) {
+		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
+		return derived1_(x, y) + derived2_(x, y);
 	};
 
-	const auto& operator()(const std::size_t height, const std::size_t width) const {
-		return derived1_(height, width) + derived2_(height, width);
-	};
+	const auto& operator()(const std::size_t x, const std::size_t y) const {
+		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
+		return derived1_(x, y) + derived2_(x, y);
+	}
 private:
 	Derived1 derived1_;
 	Derived2 derived2_;
