@@ -49,7 +49,7 @@ SCENARIO("You can do the sum of 2 vectors3") {
 		auto result = lhs + rhs;
 
 		REQUIRE(result.x == 5.f);
-		REQUIRE(result.y == 4.f);
+		REQUIRE(result.y == 6.f);
 		REQUIRE(result.z == 3.f);
 	}
 }
@@ -98,6 +98,22 @@ SCENARIO("You can subsract a vector with a constant or another vector") {
 	}
 
 	GIVEN("2 vectors with followings value:\n\t{1.f, 2.f, 3.f}\n\t{2.f, 3.f, 4.f}") {
-		Math::Vector3<float> lhs{ 2.f, 3.f, 4.f };
+		Math::Vector3<float> lhs{ 1.f, 2.f, 3.f };
+		Math::Vector3<float> rhs{ 2.f, 3.f, 4.f };
+		auto result = lhs - rhs;
+
+		REQUIRE(result.x == -1.f);
+		REQUIRE(result.y == -1.f);
+		REQUIRE(result.z == -1.f);
+	}
+
+	GIVEN("2 vectors with followings value:\n\t{1.f, 2.f, 3.f}\n\tConstant: 1") {
+		Math::Vector3<float> lhs{ 1.f, 2.f, 3.f };
+		auto rhs = 1.f;
+		auto result = lhs - rhs;
+
+		REQUIRE(result.x == 0.f);
+		REQUIRE(result.y == 1.f);
+		REQUIRE(result.z == 2.f);
 	}
 }
