@@ -3,29 +3,38 @@
 
 #include <type_traits>
 #include <array>
+#include <algorithm>
 #include "include/Math/Eval/Addition.hpp"
 #include "include/Math/Eval/Substraction.hpp"
 #include "include/Math/Eval/Multiplication.hpp"
+
+namespace Math {
+
+template<typename Derived1, typename Derived2> class MatrixMultiplication;
+
+} // namespace Math
+
+#include "include/Math/Eval/MatrixMultiplication.hpp"
 #include "include/Math/Eval/BaseAlg.hpp"
 
 namespace Math {
 
-template<typename T, std::size_t WIDTH, std::size_t HEIGHT>
-class Matrix : public BaseAlg<Matrix<T, WIDTH, HEIGHT>> {
-
-	using Row = std::integral_constant<std::size_t, HEIGHT>;
-	using Col = std::integral_constant<std::size_t, WIDTH>;
-	using Size = std::integral_constant<std::size_t, WIDTH * HEIGHT>;
-
+template<typename T, std::size_t HEIGHT, std::size_t WIDTH>
+class Matrix : public BaseAlg<Matrix<T, HEIGHT, WIDTH>> {
 public:
-	Matrix() = default;
+	using value_col = std::integral_constant<std::size_t, WIDTH>;
+	using value_row = std::integral_constant<std::size_t, HEIGHT>;
+	using value_size = std::integral_constant<std::size_t, WIDTH * HEIGHT>;
+	using value_type = T;
+
+	Matrix() : data_{} {}
 
 	Matrix(std::initializer_list<T> init) {
-		assert(init.size() == Size::value && "Size in the brace MUST be the same as the template argument");
+		assert(init.size() == value_size::value && "Size in the brace MUST be the same as the template argument");
 		auto it = init.begin();
 		for (std::size_t i = 0; i < row(); ++i) {
 			for (std::size_t j = 0; j < col(); ++j) {
-				data_[i * WIDTH + j] = *it;
+				data_[i * value_col::value + j] = *it;
 				++it;
 			}
 		}
@@ -38,35 +47,40 @@ public:
 	}
 	
 	auto& operator()(const std::size_t x, const std::size_t y) {
-		assert(y * WIDTH + x < Size::value && "Index out of range");
-		return data_[y * WIDTH + x];
+		assert(y * value_row::value + x < value_size::value && "Index out of range");
+		return data_[y * value_row::value + x];
 	};
 
-	const T& operator()(const std::size_t x, const std::size_t y) const {
-		assert(y * WIDTH + x < Size::value && "Index out of range");
-		return data_[y * WIDTH + x];
+	const auto& operator()(const std::size_t x, const std::size_t y) const {
+		assert(y * value_row::value + x < value_size::value && "Index out of range");
+		return data_[y * value_row::value + x];
 	};
 
-	auto row() const { return Row::value; }
-	auto col() const { return Col::value; }
-	auto size() const { return Size::value; }
+	auto row() const { return value_row::value; }
+	auto col() const { return value_col::value; }
+	auto size() const { return value_size::value; }
 private:
-	std::array<T, Size::value> data_;
+	std::array<value_type, value_size::value> data_;
 };
 
-template<typename T, std::size_t W, std::size_t H>
-auto operator+(const Matrix<T, W, H>& lhs, const Matrix<T, W, H>& rhs) {
-	return Addition<Matrix<T, W, H>, Matrix<T, W, H>>{ lhs, rhs }; 
+template<typename T, std::size_t H, std::size_t W>
+auto operator+(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) {
+	return Addition<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs }; 
 }
 
-template<typename T, std::size_t W, std::size_t H>
-auto operator-(const Matrix<T, W, H>& lhs, const Matrix<T, W, H>& rhs) { 
-	return Substraction<Matrix<T, W, H>, Matrix<T, W, H>>{ lhs, rhs }; 
+template<typename T, std::size_t H, std::size_t W>
+auto operator-(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) { 
+	return Substraction<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs }; 
 }
 
-template<typename T, std::size_t W, std::size_t H>
-auto operator*(const Matrix<T, W, H>& lhs, const Matrix<T, W, H>& rhs) {
-	return Matrix<T, W, H>{ Multiplication<Matrix<T, W, H>, Matrix<T, W, H>>{ lhs, rhs } };
+template<typename T, std::size_t H1, std::size_t W1, std::size_t H2, std::size_t W2>
+auto operator*(const Matrix<T, H1, W1>& lhs, const Matrix<T, H2, W2>& rhs) {
+	return MatrixMultiplication<Matrix<T, H1, W1>, Matrix<T, H2, W2>>{ lhs, rhs };
+}
+
+template<typename T, std::size_t H, std::size_t W>
+auto operator%(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) {
+	return Multiplication<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs };
 }
 
 } // namespace Math
