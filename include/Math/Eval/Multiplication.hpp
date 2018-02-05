@@ -8,7 +8,8 @@ namespace Math {
 template<typename Derived1, typename Derived2>
 class Multiplication : BaseAlg<Multiplication<Derived1, Derived2>> {
 public:
-	Multiplication(const Derived1& d1, const Derived2& d2) 
+
+	Multiplication(const Derived1& d1, const Derived2& d2)
 		: derived1_{ d1 }, derived2_{ d2 } {}
 
 	auto row() const { return std::max(derived1_.row(), derived2_.row()); };
