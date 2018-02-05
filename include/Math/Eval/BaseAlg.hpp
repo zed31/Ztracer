@@ -21,8 +21,8 @@ template<typename D1>
 void eval(BaseAlg<D1>& out, const BaseAlg<D1>& alg1) {
 	auto col = out.col();
 	auto row = out.row();
-	for (std::size_t i = 0; i < row; ++i) {
-		for (std::size_t j = 0; j < col; ++j) {
+	for (std::size_t i = 0; i < col; ++i) {
+		for (std::size_t j = 0; j < row; ++j) {
 			out(i, j) = alg1(i, j);
 		}
 	}
