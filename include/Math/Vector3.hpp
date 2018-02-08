@@ -1,12 +1,13 @@
 #ifndef VECTOR_3_HPP__
 # define VECTOR_3_HPP__
 
-namespace Math {
+#include <math.h>
 
-#include <cmath>
+namespace Math {
 
 template<typename T>
 struct Vector3 {
+	using value_type = T;
 	Vector3(const T& val) : x{ val }, y{ val }, z{ val } {};
 	Vector3(T xVal, T yVal, T zVal) : x{ xVal }, y{ yVal }, z{ zVal } {};
 
