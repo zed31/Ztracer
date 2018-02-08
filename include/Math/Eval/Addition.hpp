@@ -2,13 +2,15 @@
 #define ADDITION_HPP__
 
 #include <algorithm>
-#include "BaseAlg.hpp"
+#include "include/Math/Eval/Traits.hpp"
+#include "include/Math/Eval/BaseAlg.hpp"
 
 namespace Math {
 
 template<typename Derived1, typename Derived2>
 class Addition : BaseAlg<Addition<Derived1, Derived2>> {
 public:
+	using value_type = typename Math::common_type<Derived1, Derived2>::type;
 	Addition(const Derived1& d1, const Derived2& d2) : derived1_{ d1 }, derived2_{ d2 } {};
 
 	auto size() const { return std::max(derived1_.size(), derived2_.size()); };
