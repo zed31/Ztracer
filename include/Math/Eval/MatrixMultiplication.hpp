@@ -20,12 +20,15 @@ namespace Math {
 template<typename Derived1, typename Derived2>
 class MatrixMultiplication : public BaseAlg<MatrixMultiplication<Derived1, Derived2>> {
 public:
-	using common_type = std::common_type_t<typename Derived1::value_type, typename Derived2::value_type>;
+	using common_type = typename Math::common_type<Derived1, Derived2>::type;
 	using value_type = common_type;
 	using MatrixResult = Matrix<common_type, Derived1::value_row::value, Derived2::value_col::value>;
 
 	MatrixMultiplication(const Derived1& d1, const Derived2& d2) {
-		assert(d1.col() == d2.row() && "Number of element in a row must be equal to the number of element in the col");
+		assert(
+			d1.col() == d2.row() && 
+			"Number of element in a row must be equal to the number of element in the col"
+		);
 		auto y = d2.col();
 		auto r = d1.row();
 		for (std::size_t d2Col = 0; d2Col < y; ++d2Col) {
