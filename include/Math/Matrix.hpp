@@ -30,7 +30,10 @@ public:
 	Matrix() : data_{} {}
 
 	Matrix(std::initializer_list<T> init) {
-		assert(init.size() == value_size::value && "Size in the brace MUST be the same as the template argument");
+		assert(
+			init.size() == value_size::value && 
+			"Size in the brace MUST be the same as the template argument"
+		);
 		auto it = init.begin();
 		for (std::size_t i = 0; i < row(); ++i) {
 			for (std::size_t j = 0; j < col(); ++j) {
@@ -42,7 +45,10 @@ public:
 	
 	template<typename D>
 	Matrix(const BaseAlg<D>& alg) {
-		assert(alg.row() == row() && alg.col() == col() && "Error, both column and row number must be the same");
+		assert(
+			alg.row() == row() && alg.col() == col() && 
+			"Error, both column and row number must be the same"
+		);
 		eval(*this, alg);
 	}
 	
@@ -73,9 +79,9 @@ auto operator-(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) {
 	return Substraction<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs }; 
 }
 
-template<typename T, std::size_t H1, std::size_t W1, std::size_t H2, std::size_t W2>
-auto operator*(const Matrix<T, H1, W1>& lhs, const Matrix<T, H2, W2>& rhs) {
-	return MatrixMultiplication<Matrix<T, H1, W1>, Matrix<T, H2, W2>>{ lhs, rhs };
+template<typename D1, typename D2>
+auto operator*(const BaseAlg<D1>& lhs, const BaseAlg<D2>& rhs) {
+	return MatrixMultiplication<BaseAlg<D1>, BaseAlg<D2>>{ lhs, rhs };
 }
 
 template<typename T, std::size_t H, std::size_t W>
