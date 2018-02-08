@@ -4,6 +4,7 @@ workspace "ZTracer"
    flags { "FatalWarnings", "UndefinedIdentifiers", "ShadowedVariables" }
    warnings "Extra"
    cppdialect "C++17"
+   links { "m" }
    
 project "ZTracer"
    kind "ConsoleApp"
