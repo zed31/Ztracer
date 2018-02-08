@@ -9,14 +9,23 @@ namespace Math {
 template<typename Derived>
 class BaseAlg {
 public:
-	using value_type = typename traits<Derived>::type;
+	using value_type = typename Math::traits<Derived>::type;
+	using value_col = typename Math::traits<Derived>::value_col;
+	using value_row = typename Math::traits<Derived>::value_row;
+
+	BaseAlg() = default;
+	BaseAlg(const BaseAlg& m) {
+		eval(*this, m);
+	}
 
 	auto size() const { return derived().size(); }
-	auto col() const { return derived().row(); }
-	auto row() const { return derived().col(); }
+	auto col() const { return derived().col(); }
+	auto row() const { return derived().row(); }
 	
-	auto& operator()(const std::size_t x, const std::size_t y) { return derived()(x, y); }
-	const auto& operator()(const std::size_t x, const std::size_t y) const { return derived()(x, y); }
+	auto& operator()(const std::size_t x, const std::size_t y) 
+	{ return derived()(x, y); }
+	const auto& operator()(const std::size_t x, const std::size_t y) const 
+	{ return derived()(x, y); }
 private:
 	auto& derived() { return static_cast<Derived&>(*this); };
 	auto const& derived() const { return static_cast<Derived const&>(*this); };
@@ -26,9 +35,9 @@ template<typename D1>
 void eval(BaseAlg<D1>& out, const BaseAlg<D1>& alg1) {
 	auto col = out.col();
 	auto row = out.row();
-	for (std::size_t i = 0; i < col; ++i) {
-		for (std::size_t j = 0; j < row; ++j) {
-			out(i, j) = alg1(i, j);
+	for (std::size_t i = 0; i < row; ++i) {
+		for (std::size_t j = 0; j < col; ++j) {
+			out(j, i) = alg1(j, i);
 		}
 	}
 }

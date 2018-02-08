@@ -1,6 +1,7 @@
 #ifndef ADDITION_HPP__
 #define ADDITION_HPP__
 
+#include <type_traits>
 #include <algorithm>
 #include "include/Math/Eval/Traits.hpp"
 #include "include/Math/Eval/BaseAlg.hpp"
@@ -10,20 +11,34 @@ namespace Math {
 template<typename Derived1, typename Derived2>
 class Addition : BaseAlg<Addition<Derived1, Derived2>> {
 public:
+	using value_row = typename Math::traits<Derived1>::value_row;
+	using value_col = typename Math::traits<Derived1>::value_col;
 	using value_type = typename Math::common_type<Derived1, Derived2>::type;
-	Addition(const Derived1& d1, const Derived2& d2) : derived1_{ d1 }, derived2_{ d2 } {};
 
-	auto size() const { return std::max(derived1_.size(), derived2_.size()); };
-	auto row() const { return std::max(derived1_.row(), derived2_.row()); };
-	auto col() const { return std::max(derived1_.col(), derived2_.col()); };
+	Addition(const Derived1& d1, const Derived2& d2) : derived1_{ d1 }, derived2_{ d2 } {
+		assert_same_type(
+			typename Math::traits<Derived1>::value_row{}, 
+			typename Math::traits<Derived2>::value_row{}
+		);
+		assert_same_type(
+			typename Math::traits<Derived2>::value_col{}, 
+			typename Math::traits<Derived1>::value_col{}
+		);
+	};
+
+	auto size() const { return derived1_.size(); };
+	auto row() const { return derived1_.row(); };
+	auto col() const { return derived1_.col(); };
 
 	auto operator()(const std::size_t x, const std::size_t y) {
-		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
+		std::cout << "derived1[" << x << ", " << y << "] = " << derived1_(x, y) << std::endl
+			<< "derived2[" << x << ", " << y << "] = " << derived2_(x, y) << std::endl;
 		return derived1_(x, y) + derived2_(x, y);
 	};
 
 	const auto operator()(const std::size_t x, const std::size_t y) const {
-		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
+		std::cout << "derived1[" << x << ", " << y << "] = " << derived1_(x, y) << std::endl
+			<< "derived2[" << x << ", " << y << "] = " << derived2_(x, y) << std::endl;
 		return derived1_(x, y) + derived2_(x, y);
 	}
 private:
