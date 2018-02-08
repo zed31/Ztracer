@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <type_traits>
+#include "include/Math/Eval/Traits.hpp"
+
 
 namespace Math {
 
@@ -19,6 +21,7 @@ template<typename Derived1, typename Derived2>
 class MatrixMultiplication : public BaseAlg<MatrixMultiplication<Derived1, Derived2>> {
 public:
 	using common_type = std::common_type_t<typename Derived1::value_type, typename Derived2::value_type>;
+	using value_type = common_type;
 	using MatrixResult = Matrix<common_type, Derived1::value_row::value, Derived2::value_col::value>;
 
 	MatrixMultiplication(const Derived1& d1, const Derived2& d2) {

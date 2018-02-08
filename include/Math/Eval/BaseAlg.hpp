@@ -1,11 +1,16 @@
 #ifndef BASE_ALG_HPP__
 #define BASE_ALG_HPP__
 
+#include "include/Math/Eval/Traits.hpp"
+
 namespace Math {
+
 
 template<typename Derived>
 class BaseAlg {
 public:
+	using value_type = typename traits<Derived>::type;
+
 	auto size() const { return derived().size(); }
 	auto col() const { return derived().row(); }
 	auto row() const { return derived().col(); }
