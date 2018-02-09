@@ -69,9 +69,9 @@ private:
 	std::array<value_type, value_size::value> data_;
 };
 
-template<typename D1, std::size_t H, std::size_t W>
-auto operator+(const Matrix<D1, H, W>& lhs, const Matrix<D1, H, W>& rhs) {
-	return Addition<Matrix<D1, H, W>, Matrix<D1, H, W>>{ lhs, rhs }; 
+template<typename D1>
+auto operator+(const BaseAlg<D1>& lhs, const BaseAlg<D1> rhs) {
+	return Addition<BaseAlg<D1>, BaseAlg<D1>>{ lhs, rhs.derived() }; 
 }
 
 template<typename T, std::size_t H, std::size_t W>
