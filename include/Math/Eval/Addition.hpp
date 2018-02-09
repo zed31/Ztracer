@@ -30,15 +30,11 @@ public:
 	auto row() const { return derived1_.row(); };
 	auto col() const { return derived1_.col(); };
 
-	auto operator()(const std::size_t x, const std::size_t y) {
-		std::cout << "derived1[" << x << ", " << y << "] = " << derived1_(x, y) << std::endl
-			<< "derived2[" << x << ", " << y << "] = " << derived2_(x, y) << std::endl;
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) {
 		return derived1_(x, y) + derived2_(x, y);
 	};
 
-	const auto operator()(const std::size_t x, const std::size_t y) const {
-		std::cout << "derived1[" << x << ", " << y << "] = " << derived1_(x, y) << std::endl
-			<< "derived2[" << x << ", " << y << "] = " << derived2_(x, y) << std::endl;
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) const {
 		return derived1_(x, y) + derived2_(x, y);
 	}
 private:
