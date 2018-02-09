@@ -22,14 +22,12 @@ public:
 	auto row() const { return derived1_.row(); }
 	auto size() const { return derived1_.size(); }
 
-	auto& operator()(const std::size_t x, const std::size_t y) {
-		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
-		return derived1_(x, y) - derived2_(x, y);
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) {
+		return derived1_(x, y) + derived2_(x, y);
 	}
 
-	const auto& operator()(const std::size_t x, const std::size_t y) const {
-		if (x > 0 && derived2_.col() == 1) return derived1_(x, y);
-		return derived1_(x, y) - derived2_(x, y);
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) const {
+		return derived1_(x, y) + derived2_(x, y);
 	}
 private:
 	
