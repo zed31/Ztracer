@@ -1,5 +1,6 @@
 #include "Catch.hpp"
 #include <iostream>
+#include "include/Math/Vector3.hpp"
 #include "include/Math/Matrix.hpp"
 
 SCENARIO("We can instanciate a simple matrix") {
@@ -13,6 +14,7 @@ SCENARIO("We can instanciate a simple matrix") {
 
 SCENARIO("We can add 2 matrices") {
 	GIVEN("2 2x2 float matrices") {
+		std::cout << "Testing addition between 2 matrices" << std::endl;
 		Math::Matrix<float, 2, 2> m{ 1.f, 1.f, 1.f, 1.f  };
 		Math::Matrix<float, 2, 2> m2{ 1.f, 1.f, 1.f, 1.f };
 
@@ -97,7 +99,25 @@ SCENARIO("We can multiply 2 matrices") {
 			for (std::size_t j = 0; j < col; ++j) {
 				auto vResult = result(j, i);
 				std::cout << vResult << ",";
-				//REQUIRE(vResult == 4.f);
+				REQUIRE(vResult == 6.f);
+			}
+			std::cout << std::endl;
+		}
+	}
+	GIVEN("1 vector3 and 1 3x3 matrix") {
+		Math::Vector3<float> v{ 1.f, 1.f, 1.f };
+		Math::Matrix<float, 3, 3> m{ 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f, 1.f };
+		auto result = v * m;
+		
+		auto col = result.col();
+		auto row = result.row();
+
+		REQUIRE(col == 3);
+		REQUIRE(row == 1);
+
+		for (std::size_t i = 0; i < row; ++i) {
+			for (std::size_t j = 0; j < col; ++j) {
+				std::cout << result(j, i) << ", ";
 			}
 			std::cout << std::endl;
 		}
