@@ -42,22 +42,19 @@ public:
 			}
 		}
 	}
-	
-	template<typename D>
-	Matrix(const BaseAlg<D>& alg) {
-		assert(
-			alg.row() == row() && alg.col() == col() && 
-			"Error, both column and row number must be the same"
-		);
-		eval(*this, alg);
+
+	template<typename Callable> void for_each(Callable&& c) {
+		for (std::size_t i = 0; i < row(); ++i)
+			for (std::size_t j = 0; j < col(); ++j)
+				c(data_[i * value_col::value + j]);
 	}
-	
+		
 	auto& operator()(const std::size_t x, const std::size_t y) {
 		assert(y * value_row::value + x < value_size::value && "Index out of range");
 		return data_[y * value_row::value + x];
 	};
 
-	const auto& operator()(const std::size_t x, const std::size_t y) const {
+	auto& operator()(const std::size_t x, const std::size_t y) const {
 		assert(y * value_row::value + x < value_size::value && "Index out of range");
 		return data_[y * value_row::value + x];
 	};
@@ -69,24 +66,24 @@ private:
 	std::array<value_type, value_size::value> data_;
 };
 
-template<typename D1>
-auto operator+(const BaseAlg<D1>& lhs, const BaseAlg<D1> rhs) {
-	return Addition<BaseAlg<D1>, BaseAlg<D1>>{ lhs, rhs.derived() }; 
+template<typename D1, typename D2>
+auto operator+(const BaseAlg<D1>& lhs, const BaseAlg<D2>& rhs) {
+	return Addition<D1, D2>{ lhs.derived(), rhs.derived() }; 
 }
 
-template<typename T, std::size_t H, std::size_t W>
-auto operator-(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) { 
-	return Substraction<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs }; 
+template<typename D1, typename D2>
+auto operator-(const BaseAlg<D1>& lhs, const BaseAlg<D2>& rhs) { 
+	return Substraction<D1, D2>{ lhs.derived(), rhs.derived() }; 
 }
 
 template<typename D1, typename D2>
 auto operator*(const BaseAlg<D1>& lhs, const BaseAlg<D2>& rhs) {
-	return MatrixMultiplication<BaseAlg<D1>, BaseAlg<D2>>{ lhs, rhs };
+	return MatrixMultiplication<D1, D2>{ lhs.derived(), rhs.derived() };
 }
 
-template<typename T, std::size_t H, std::size_t W>
-auto operator%(const Matrix<T, H, W>& lhs, const Matrix<T, H, W>& rhs) {
-	return Multiplication<Matrix<T, H, W>, Matrix<T, H, W>>{ lhs, rhs };
+template<typename D1, typename D2>
+auto operator%(const BaseAlg<D1>& lhs, const BaseAlg<D2>& rhs) {
+	return Multiplication<D1, D2>{ lhs.derived(), rhs.derived() };
 }
 
 } // namespace Math
