@@ -1,6 +1,7 @@
 #ifndef BASE_ALG_HPP__
 #define BASE_ALG_HPP__
 
+#include <iostream>
 #include "include/Math/Eval/Traits.hpp"
 
 namespace Math {
@@ -22,13 +23,14 @@ public:
 	auto col() const { return derived().col(); }
 	auto row() const { return derived().row(); }
 	
-	auto& operator()(const std::size_t x, const std::size_t y) 
-	{ return derived()(x, y); }
-	const auto& operator()(const std::size_t x, const std::size_t y) const 
-	{ return derived()(x, y); }
-private:
+
 	auto& derived() { return static_cast<Derived&>(*this); };
-	auto const& derived() const { return static_cast<Derived const&>(*this); };
+	auto& derived() const { return static_cast<const Derived&>(*this); };
+
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) 
+	{ return derived()(x, y); }
+	decltype(auto) operator()(const std::size_t x, const std::size_t y) const
+	{ return derived()(x, y); }
 };
 
 template<typename D1>
