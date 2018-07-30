@@ -9,8 +9,8 @@ workspace "ZTracer"
 project "ZTracer"
    kind "ConsoleApp"
    language "C++"
-   includedirs { "./", "./include" }
-   files { "./src/**.cpp", "./include/**.hh", "./include/**.hpp", "./main.cpp" }
+   includedirs { "./", "./include", "./lib/glm", "./lib/stb" }
+   files { "./src/**.cpp", "./include/**.hh", "./include/**.hpp", "./lib/glm/**", "./lib/stb/**", "./main.cpp" }
    filter { "configurations:Debug" }
        defines { "DEBUG" }
        symbols "On"
